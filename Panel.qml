@@ -326,11 +326,11 @@ Panel {
             Layout.alignment: Qt.AlignVCenter
           }
 
-          Button {
+          TooltipButton {
             visible: root.settingsMode
             text: "Times"
             foreground: root.fg
-            tooltipText: "Back to prayer times"
+            tooltip: "Back to prayer times"
             fontFamily: root.fontFamily
             fontSize: Style.font.caption
             horizontalPadding: Style.spacing.controlPaddingX
@@ -338,11 +338,11 @@ Panel {
             onClicked: root.showMain()
           }
 
-          Button {
+          TooltipButton {
             visible: root.settingsMode
             text: "Save"
             foreground: root.fg
-            tooltipText: "Save settings"
+            tooltip: "Save settings"
             fontFamily: root.fontFamily
             fontSize: Style.font.caption
             horizontalPadding: Style.spacing.controlPaddingX
@@ -351,11 +351,11 @@ Panel {
             onClicked: root.saveSettings()
           }
 
-          Button {
+          TooltipButton {
             visible: !root.settingsMode
             text: "Settings"
             foreground: root.fg
-            tooltipText: "Prayer time settings"
+            tooltip: "Prayer time settings"
             fontFamily: root.fontFamily
             fontSize: Style.font.caption
             horizontalPadding: Style.spacing.controlPaddingX
@@ -363,11 +363,11 @@ Panel {
             onClicked: root.openSettings()
           }
 
-          Button {
+          TooltipButton {
             visible: !root.settingsMode
             text: "Refresh"
             foreground: root.fg
-            tooltipText: "Refresh prayer times"
+            tooltip: "Refresh prayer times"
             fontFamily: root.fontFamily
             fontSize: Style.font.caption
             horizontalPadding: Style.spacing.controlPaddingX
@@ -574,6 +574,22 @@ Panel {
           horizontalAlignment: Text.AlignHCenter
         }
       }
+    }
+  }
+
+  // Button's own built-in tooltip (driven by its `tooltipText` property)
+  // hardcodes a square corner, unlike PanelToolTip and every rounded
+  // surface elsewhere in the shell. Track hover locally and pair it with
+  // PanelToolTip instead, so these tooltips match the rest of the panel.
+  component TooltipButton: Button {
+    id: tooltipButton
+    property string tooltip: ""
+    property bool _hovered: false
+    onHovered: function(h) { tooltipButton._hovered = h }
+
+    PanelToolTip {
+      visible: tooltipButton.tooltip !== "" && tooltipButton._hovered
+      text: tooltipButton.tooltip
     }
   }
 }
