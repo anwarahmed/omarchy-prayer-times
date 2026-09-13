@@ -578,18 +578,41 @@ Panel {
   }
 
   // Button's own built-in tooltip (driven by its `tooltipText` property)
-  // hardcodes a square corner, unlike PanelToolTip and every rounded
-  // surface elsewhere in the shell. Track hover locally and pair it with
-  // PanelToolTip instead, so these tooltips match the rest of the panel.
+  // hardcodes a square corner. PanelToolTip (a QQC2 ToolTip/Popup) turned
+  // out not to honor the rounded background either in this panel — the
+  // bar's own tooltip avoids QQC2 Popup entirely and draws a plain
+  // BorderSurface instead, so do the same here rather than fight Popup's
+  // rendering.
   component TooltipButton: Button {
     id: tooltipButton
     property string tooltip: ""
     property bool _hovered: false
     onHovered: function(h) { tooltipButton._hovered = h }
 
-    PanelToolTip {
+    BorderSurface {
+      id: tip
       visible: tooltipButton.tooltip !== "" && tooltipButton._hovered
-      text: tooltipButton.tooltip
+      anchors.top: parent.bottom
+      anchors.right: parent.right
+      anchors.topMargin: Style.spacing.xxs
+      radius: Style.cornerRadius
+      color: Color.tooltip.background
+      borderSpec: Border.localOrSurfaceSpec("tooltip", "border", Color.tooltip.border, Color.tooltip.border, Style.normalBorderWidth)
+      padding: Style.spacing.controlPaddingX
+      z: 1000
+      implicitWidth: tipText.implicitWidth + contentLeftInset + contentRightInset
+      implicitHeight: tipText.implicitHeight + contentTopInset + contentBottomInset
+
+      Text {
+        id: tipText
+        textFormat: Text.PlainText
+        x: tip.contentLeftInset
+        y: tip.contentTopInset
+        text: tooltipButton.tooltip
+        color: Color.tooltip.text
+        font.family: Style.font.family
+        font.pixelSize: Style.font.bodySmall
+      }
     }
   }
 }
