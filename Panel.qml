@@ -326,11 +326,11 @@ Panel {
             Layout.alignment: Qt.AlignVCenter
           }
 
-          TooltipButton {
+          Button {
             visible: root.settingsMode
             text: "Times"
             foreground: root.fg
-            tooltip: "Back to prayer times"
+            tooltipText: "Back to prayer times"
             fontFamily: root.fontFamily
             fontSize: Style.font.caption
             horizontalPadding: Style.spacing.controlPaddingX
@@ -338,11 +338,11 @@ Panel {
             onClicked: root.showMain()
           }
 
-          TooltipButton {
+          Button {
             visible: root.settingsMode
             text: "Save"
             foreground: root.fg
-            tooltip: "Save settings"
+            tooltipText: "Save settings"
             fontFamily: root.fontFamily
             fontSize: Style.font.caption
             horizontalPadding: Style.spacing.controlPaddingX
@@ -351,11 +351,11 @@ Panel {
             onClicked: root.saveSettings()
           }
 
-          TooltipButton {
+          Button {
             visible: !root.settingsMode
             text: "Settings"
             foreground: root.fg
-            tooltip: "Prayer time settings"
+            tooltipText: "Prayer time settings"
             fontFamily: root.fontFamily
             fontSize: Style.font.caption
             horizontalPadding: Style.spacing.controlPaddingX
@@ -363,11 +363,11 @@ Panel {
             onClicked: root.openSettings()
           }
 
-          TooltipButton {
+          Button {
             visible: !root.settingsMode
             text: "Refresh"
             foreground: root.fg
-            tooltip: "Refresh prayer times"
+            tooltipText: "Refresh prayer times"
             fontFamily: root.fontFamily
             fontSize: Style.font.caption
             horizontalPadding: Style.spacing.controlPaddingX
@@ -573,45 +573,6 @@ Panel {
           font.pixelSize: Style.font.caption
           horizontalAlignment: Text.AlignHCenter
         }
-      }
-    }
-  }
-
-  // Button's own built-in tooltip (driven by its `tooltipText` property)
-  // hardcodes a square corner. PanelToolTip (a QQC2 ToolTip/Popup) turned
-  // out not to honor the rounded background either in this panel — the
-  // bar's own tooltip avoids QQC2 Popup entirely and draws a plain
-  // BorderSurface instead, so do the same here rather than fight Popup's
-  // rendering.
-  component TooltipButton: Button {
-    id: tooltipButton
-    property string tooltip: ""
-    property bool _hovered: false
-    onHovered: function(h) { tooltipButton._hovered = h }
-
-    BorderSurface {
-      id: tip
-      visible: tooltipButton.tooltip !== "" && tooltipButton._hovered
-      anchors.top: parent.bottom
-      anchors.right: parent.right
-      anchors.topMargin: Style.spacing.xxs
-      radius: Style.cornerRadius
-      color: Color.tooltip.background
-      borderSpec: Border.localOrSurfaceSpec("tooltip", "border", Color.tooltip.border, Color.tooltip.border, Style.normalBorderWidth)
-      padding: Style.spacing.controlPaddingX
-      z: 1000
-      implicitWidth: tipText.implicitWidth + contentLeftInset + contentRightInset
-      implicitHeight: tipText.implicitHeight + contentTopInset + contentBottomInset
-
-      Text {
-        id: tipText
-        textFormat: Text.PlainText
-        x: tip.contentLeftInset
-        y: tip.contentTopInset
-        text: tooltipButton.tooltip
-        color: Color.tooltip.text
-        font.family: Style.font.family
-        font.pixelSize: Style.font.bodySmall
       }
     }
   }
