@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "anwar.prayer-times",
+  "name": "Prayer Times",
+  "version": "1.0.0",
+  "author": "anwar",
+  "license": "MIT",
+  "description": "Shows the next Islamic prayer time and countdown for your location in the bar, with a detail panel for all five daily prayers.",
+  "kinds": ["bar-widget"],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "Prayer Times",
+    "description": "Next Islamic prayer time and countdown. Reuses the location configured for the weather widget (omarchy-weather-location), falling back to IP geolocation.",
+    "category": "Info",
+    "allowMultiple": false,
+    "defaults": {
+      "calculationMethod": "3",
+      "asrSchool": "0",
+      "timeFormat": "12h"
+    },
+    "schema": [
+      {
+        "key": "calculationMethod",
+        "type": "enum",
+        "label": "Calculation method",
+        "description": "Angle convention used to compute Fajr/Isha",
+        "options": ["3", "2", "5", "4", "1", "8", "9", "10", "11", "13", "15"],
+        "defaultValue": "3"
+      },
+      {
+        "key": "asrSchool",
+        "type": "enum",
+        "label": "Asr juristic method",
+        "options": ["0", "1"],
+        "defaultValue": "0"
+      },
+      {
+        "key": "timeFormat",
+        "type": "enum",
+        "label": "Time format",
+        "options": ["12h", "24h"],
+        "defaultValue": "12h"
+      }
+    ]
+  }
+}
