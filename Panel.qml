@@ -43,6 +43,12 @@ Panel {
   property var tomorrowTimings: null
   property int todayRetries: 0
   property int tomorrowRetries: 0
+  // Calendar day (DD-MM-YYYY) the current timings were fetched for. Compared
+  // against the real date on every tick so a date rollover that happens
+  // while the machine is asleep (timers don't fire during suspend, so
+  // dailyRefreshTimer can miss it) still gets picked up promptly on wake,
+  // instead of leaving yesterday's schedule stuck with no upcoming entry.
+  property string fetchedDayKey: ""
 
   property real nowMs: Date.now()
 
@@ -148,6 +154,7 @@ Panel {
   }
 
   function refresh() {
+    fetchedDayKey = Model.dateParam(new Date())
     locationRetries = 0
     todayRetries = 0
     tomorrowRetries = 0
@@ -213,13 +220,19 @@ Panel {
     onTriggered: root.refresh()
   }
 
-  // Cheap re-render of the countdown text; no network involved.
+  // Re-renders the countdown text every 30s and, cheaply on each tick, checks
+  // whether the calendar day has rolled over since the last fetch (e.g. the
+  // machine slept through midnight) so the schedule refetches promptly
+  // instead of waiting on dailyRefreshTimer, which can't fire during sleep.
   Timer {
     id: tickTimer
     interval: 30000
     running: true
     repeat: true
-    onTriggered: root.nowMs = Date.now()
+    onTriggered: {
+      root.nowMs = Date.now()
+      if (Model.dateParam(new Date()) !== root.fetchedDayKey) root.refresh()
+    }
   }
 
   Component.onCompleted: root.refresh()
