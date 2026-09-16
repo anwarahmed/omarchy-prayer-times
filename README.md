@@ -25,13 +25,18 @@ calculation method and Asr juristic method (Standard vs. Hanafi).
 
 ## Installing
 
-Clone this repo, then symlink it into `~/.config/omarchy/plugins/anwar.prayer-times/`
+Clone this repo directly into `~/.config/omarchy/plugins/anwar.prayer-times/`
 and add it to the bar:
 
 ```bash
-git clone https://github.com/anwarahmed/omarchy-prayer-times.git
-ln -s "$(pwd)/omarchy-prayer-times" ~/.config/omarchy/plugins/anwar.prayer-times
+git clone https://github.com/anwarahmed/omarchy-prayer-times.git ~/.config/omarchy/plugins/anwar.prayer-times
 omarchy bar put anwar.prayer-times --after omarchy.weather
+```
+
+To update, pull the latest changes in that directory:
+
+```bash
+cd ~/.config/omarchy/plugins/anwar.prayer-times && git pull
 ```
 
 Edits under `~/.config/omarchy/plugins/` hot-reload automatically; force a
