@@ -24,11 +24,11 @@ Panel {
   readonly property color fg: root.bar ? root.bar.foreground : Color.foreground
   readonly property color dim: Qt.darker(fg, 1.45)
   readonly property string fontFamily: root.bar ? root.bar.fontFamily : "JetBrainsMono Nerd Font"
-  // U+F186 (nf-fa-moon_o): the color mosque emoji broke the bar's flat,
-  // monochrome icon style (every other widget renders a single-color Nerd
-  // Font glyph). This crescent renders correctly in JetBrainsMono Nerd Font;
-  // nf-md-mosque does not (falls back to an unrelated glyph in this font).
-  readonly property string barIcon: ""
+  // U+F0979 (nf-md-star_crescent): a single-color Material Design glyph, to
+  // match the flat, monochrome icons every other bar widget uses (a color
+  // mosque emoji broke that style). nf-md-mosque (U+F0D45) is not a mosque
+  // in JetBrainsMono Nerd Font; it falls back to an unrelated glyph.
+  readonly property string barIcon: "󰥹"
 
   readonly property string calcMethod: setting("calculationMethod", "3")
   readonly property string asrSchool: setting("asrSchool", "0")
