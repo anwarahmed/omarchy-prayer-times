@@ -30,8 +30,13 @@ this repo. To iterate:
 2. Edit `Panel.qml` / `Model.js`. Changes under `~/.config/omarchy/plugins/`
    hot-reload automatically, so to see a change from another checkout,
    `git pull` it into that clone once it's on `main` (or edit there directly
-   while iterating). Force a reload with `omarchy-shell shell rescanPlugins`
-   if a change doesn't pick up.
+   while iterating). Hot-reload isn't reliable, though: after the icon change
+   was pulled, the shell logged reloading this plugin (and
+   `omarchy-shell shell rescanPlugins` ran) but kept showing the old icon.
+   If a change doesn't show up, restart the shell with
+   `omarchy-restart-shell`. It keeps `shell.json`, unlike
+   `omarchy-refresh-shell`, which resets it to defaults. Check what's actually
+   on screen with a screenshot, e.g. `grim -g "0,0 1536x40" bar.png`.
 3. There are no automated tests. `Model.js` is written to be pure/testable in
    isolation (it CommonJS-exports its functions when `module` is defined) even
    though no test harness currently exercises it — keep new logic there
@@ -50,8 +55,9 @@ this repo. To iterate:
   PRs by number, give the update command
   (`cd ~/.config/omarchy/plugins/anwar.prayer-times && git pull`), and end
   with a `compare/vPREV...vX.Y.Z` "Full changelog" link.
-- `v1.0.0` tags the initial commit (`c64de4d`) as a tag only, with no GitHub
-  release; `v1.0.1` is the first GitHub release.
+- `v1.0.0` tags the initial commit (`c64de4d`). Its GitHub release was added
+  after `v1.0.1`'s and isn't marked latest; pass `--latest=false` when
+  creating a release for anything other than the newest version.
 
 ## Bar icon
 

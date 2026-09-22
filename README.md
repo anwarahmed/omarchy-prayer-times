@@ -39,8 +39,13 @@ To update, pull the latest changes in that directory:
 cd ~/.config/omarchy/plugins/anwar.prayer-times && git pull
 ```
 
-Edits under `~/.config/omarchy/plugins/` hot-reload automatically; force a
-reload with `omarchy-shell shell rescanPlugins` if a change doesn't pick up.
+Edits under `~/.config/omarchy/plugins/` are supposed to hot-reload
+automatically, but that doesn't always work. If the bar still shows the old
+version after an update, restart the shell:
+
+```bash
+omarchy-restart-shell
+```
 
 ## Controls
 
