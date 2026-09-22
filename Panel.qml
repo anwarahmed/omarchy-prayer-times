@@ -64,11 +64,9 @@ Panel {
     ? "Locating…"
     : (locationState.name || "Unknown location") + (locationFromIp ? " (IP)" : "")
 
-  // Two spaces after the icon: its ink overflows its single monospace cell
-  // into the following space, so one space reads narrower than a word gap.
-  readonly property string barText: nextEntry
-    ? barIcon + "  " + nextEntry.label + " " + Model.formatRemaining(nextEntry.time.getTime() - nowMs)
-    : barIcon
+  readonly property string barLabel: nextEntry
+    ? nextEntry.label + " " + Model.formatRemaining(nextEntry.time.getTime() - nowMs)
+    : ""
 
   function tomorrowDateObj() {
     var d = new Date()
@@ -293,12 +291,38 @@ Panel {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: root.barText
+    // The icon and label are drawn as separate Texts below; `text` only keeps
+    // the button's visibility logic working.
+    text: root.barIcon
+    labelVisible: false
+    fixedWidth: button.vertical ? -1 : barRow.implicitWidth + button.scaledHorizontalMargin * 2
     // Suppressed: the panel is the detail view (same convention as
     // omarchy.weather), so a stale hover tooltip can't linger on top of it
     // when a click opens the panel mid-hover.
     tooltipText: ""
     onPressed: function(b) { root.triggerPress(b) }
+
+    // The icon's ink overflows its single monospace cell, so a plain space
+    // after it reads narrower than a word gap and two spaces read as a
+    // separate icon. A fixed gap sits just under the word spacing instead.
+    Row {
+      id: barRow
+      anchors.centerIn: parent
+      spacing: Math.round(button.fontSize * 0.55)
+
+      BarText { text: root.barIcon }
+      BarText { text: root.barLabel; visible: text !== "" }
+    }
+  }
+
+  // Matches WidgetButton's own label styling.
+  component BarText: Text {
+    textFormat: Text.PlainText
+    color: button.active && button.useActiveColor ? button.activeColor : button.foreground
+    font.family: button.fontFamily
+    font.pixelSize: button.fontSize
+    renderType: Text.NativeRendering
+    verticalAlignment: Text.AlignVCenter
   }
 
   KeyboardPanel {
