@@ -21,18 +21,47 @@ This plugin only runs inside an Omarchy shell environment (it imports
 components those provide), so there is no standalone way to run or test it in
 this repo. To iterate:
 
-1. Symlink the repo into the Omarchy plugin directory:
+1. The installed plugin is its own git clone of this repo (per the README),
+   not a symlink to your working checkout:
    ```bash
-   ln -s "$(pwd)" ~/.config/omarchy/plugins/anwar.prayer-times
+   git clone https://github.com/anwarahmed/omarchy-prayer-times.git ~/.config/omarchy/plugins/anwar.prayer-times
    omarchy bar put anwar.prayer-times --after omarchy.weather
    ```
-2. Edit `Panel.qml` / `Model.js` — changes under
-   `~/.config/omarchy/plugins/` hot-reload automatically. Force a reload with
-   `omarchy-shell shell rescanPlugins` if a change doesn't pick up.
+2. Edit `Panel.qml` / `Model.js`. Changes under `~/.config/omarchy/plugins/`
+   hot-reload automatically, so to see a change from another checkout,
+   `git pull` it into that clone once it's on `main` (or edit there directly
+   while iterating). Force a reload with `omarchy-shell shell rescanPlugins`
+   if a change doesn't pick up.
 3. There are no automated tests. `Model.js` is written to be pure/testable in
    isolation (it CommonJS-exports its functions when `module` is defined) even
    though no test harness currently exercises it — keep new logic there
    side-effect free for the same reason.
+
+## Changes and releases
+
+- Every change lands on `main` through a PR from a short-lived branch, merged
+  with **squash**. Delete the branch locally and on GitHub afterwards.
+- The plugin version is the `version` field in `manifest.json`, using semver.
+  Bump it in its own PR (`Bump version to X.Y.Z`); so far, fixes and small
+  behaviour/visual changes have been patch bumps.
+- After the bump PR merges, create an annotated tag `vX.Y.Z` on the bump
+  commit, push it, then create a GitHub release from the tag with
+  `gh release create vX.Y.Z --verify-tag`. The release notes list the merged
+  PRs by number, give the update command
+  (`cd ~/.config/omarchy/plugins/anwar.prayer-times && git pull`), and end
+  with a `compare/vPREV...vX.Y.Z` "Full changelog" link.
+- `v1.0.0` tags the initial commit (`c64de4d`) as a tag only, with no GitHub
+  release; `v1.0.1` is the first GitHub release.
+
+## Bar icon
+
+The bar icon (`barIcon` in `Panel.qml`) must be a single-color Nerd Font
+glyph that renders in JetBrainsMono Nerd Font. Other Omarchy bar widgets use
+Material Design (`nf-md-*`, `U+F0xxx`) glyphs, so prefer those. It's currently
+`nf-md-star_crescent` (`U+F0979`). Avoid `nf-md-mosque` (`U+F0D45`), which
+draws an unrelated glyph in this font; `nf-md-mosque_outline` (`U+F1827`)
+works if a mosque is wanted. Check a candidate by rendering it, e.g.
+`pango-view --font="JetBrainsMono Nerd Font 36" --text="$(printf '\U000F0979')" -o out.png`.
 
 ## Architecture
 
