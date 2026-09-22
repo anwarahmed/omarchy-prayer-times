@@ -64,8 +64,10 @@ Panel {
     ? "Locating…"
     : (locationState.name || "Unknown location") + (locationFromIp ? " (IP)" : "")
 
+  // Two spaces after the icon: its ink overflows its single monospace cell
+  // into the following space, so one space reads narrower than a word gap.
   readonly property string barText: nextEntry
-    ? barIcon + " " + nextEntry.label + " " + Model.formatRemaining(nextEntry.time.getTime() - nowMs)
+    ? barIcon + "  " + nextEntry.label + " " + Model.formatRemaining(nextEntry.time.getTime() - nowMs)
     : barIcon
 
   function tomorrowDateObj() {
