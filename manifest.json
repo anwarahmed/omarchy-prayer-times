@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "anwar.prayer-times",
   "name": "Prayer Times",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "anwar",
   "license": "MIT",
   "description": "Shows the next Islamic prayer time and countdown for your location in the bar, with a detail panel for all five daily prayers.",
