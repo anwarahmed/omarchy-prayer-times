@@ -6,7 +6,8 @@ import qs.Commons
 import qs.Ui
 import "Model.js" as Model
 
-// Bar widget + detail panel showing the next Islamic prayer time.
+// Bar widget + detail panel showing the next Islamic prayer time (or sunrise,
+// between Fajr and sunrise).
 //
 // Location: reused from ~/.local/state/omarchy/settings/weather.json (the
 // same file `omarchy-weather-location` and the Weather bar widget use), so
