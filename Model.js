@@ -104,7 +104,9 @@ var PRAYER_ORDER = [
 
 // Builds the ordered day schedule: today's six markers plus tomorrow's Fajr
 // appended so "next prayer" can resolve correctly after tonight's Isha.
-// `info` entries (Sunrise) are shown but never treated as a "next" target.
+// `info` entries (Sunrise) aren't prayers and are dimmed in the list, but
+// still count as a "next" target: between Fajr and sunrise the countdown runs
+// to Sunrise (the end of Fajr's window), and only after that to Dhuhr.
 function buildSchedule(todayTimings, tomorrowTimings, todayDate, tomorrowDate) {
   var list = []
   if (todayTimings) {
@@ -131,12 +133,12 @@ function buildSchedule(todayTimings, tomorrowTimings, todayDate, tomorrowDate) {
   return list
 }
 
-// First non-info entry strictly after `nowMs`, or null if the schedule is
-// empty/unresolved (e.g. still waiting on the first fetch).
+// First entry (Sunrise included) strictly after `nowMs`, or null if the
+// schedule is empty/unresolved (e.g. still waiting on the first fetch).
 function nextPrayer(schedule, nowMs) {
   for (var i = 0; i < schedule.length; i++) {
     var entry = schedule[i]
-    if (entry.info || !entry.time) continue
+    if (!entry.time) continue
     if (entry.time.getTime() > nowMs) return entry
   }
   return null
