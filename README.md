@@ -4,6 +4,9 @@ Shows the next Islamic prayer time and a countdown in the Omarchy bar,
 right alongside the clock and weather widgets. Click it for a detail panel
 listing all five daily prayers plus Sunrise.
 
+Once Fajr starts, the countdown runs to Sunrise, when Fajr's window ends,
+rather than straight to Dhuhr. After sunrise it counts down to Dhuhr.
+
 ## Location
 
 Reuses whatever location the Weather widget is already configured for
